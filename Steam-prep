@@ -1,0 +1,88 @@
+Overview (important first)
+
+	Steam on CRUX requires:
+
+		Working X + OpenGL (already doing)
+		32-bit compatibility layer
+		32-bit NVIDIA OpenGL libs
+		Steam port
+
+If any one of those is missing, Steam will not start.
+
+1) Enable 32-bit compatibility (once)
+
+	Make sure compat-32 is enabled in /etc/prt-get.conf:
+
+		###
+		# compat-32
+		###
+		prtdir /usr/ports/compat-32
+
+
+	Sync ports: prt-get update
+
+2) Install core 32-bit runtime libs
+
+	These are required before Steam itself.
+		prt-get depinst glibc-32
+		prt-get depinst gcc-libs-32
+		prt-get depinst libstdc++-32
+
+		(Yes, CRUX makes you be explicit.)
+
+3) Install NVIDIA 32-bit OpenGL (mandatory)
+
+	Since you’re using NVIDIA: prt-get install nvidia-32
+
+		Without this:
+			Steam starts
+			Games crash or refuse to launch
+
+4) Install Steam itself
+
+	Steam lives in contrib (sometimes opt, depending on mirror).
+		prt-get depinst steam (If it pulls deps, let it.)
+
+5) First run (important)
+	Run as normal user, inside X: steam
+
+	First launch will:
+		Download Steam runtime
+		Update itself (Takes a few minutes, this is normal.)
+
+6) Verify OpenGL (before installing games)
+
+		In Steam: Help → System Information
+		Check: OpenGL renderer → NVIDIA GTX 1650
+		→ Not llvmpipe
+		→ Not software rendering
+
+		If wrong → 32-bit NVIDIA libs missing.
+
+Common CRUX Steam failures (and fixes)
+	❌ wrong ELF class
+		→ missing glibc-32 or nvidia-32
+	❌ Steam opens, games don’t
+		→ nvidia-32 not installed
+	❌ Black screen / crash
+		→ X running on NVIDIA instead of Intel (PRIME misconfig)
+
+Optional but recommended
+	Install Vulkan (many games need it):
+		prt-get depinst vulkan-loader
+		prt-get depinst vulkan-loader-32
+
+	Then:
+		vulkaninfo | less
+
+Minimal checklist
+
+✔ X works
+✔ nvidia-smi works
+✔ nvidia-32 installed
+✔ compat-32 enabled
+✔ Steam port installed
+
+When you’re back at the machine and done with X + NVIDIA, do not troubleshoot Steam until:
+	glxinfo | grep OpenGL
+		shows NVIDIA.
