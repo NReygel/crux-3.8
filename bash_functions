@@ -1,7 +1,15 @@
 # File: ~/.bash_functions
 #
 # Interactive helper functions for Bash.
-# This file must remain silent on load.
+############################################################
+### Source additional functions from ~/.bash_functions.d ###
+############################################################
+if [ -d "$HOME/.bash_functions.d" ]; then
+    for f in "$HOME"/.bash_functions.d/*; do
+        # Only source regular files
+        [ -f "$f" ] && . "$f"
+    done
+fi
 
 ########################################
 # mkcd — create directory and enter it #
@@ -47,7 +55,7 @@ mkal() {
 
     # Create ~/.bash_aliases if missing
     if [ ! -f ~/.bash_aliases ]; then
-        echo "${PASTEL_RED}File ~/.bash_aliases not found:${PASTEL_GREEN} creating with headers.${RESET}"
+        # Create the file
         {
             echo "#!/bin/bash"
             echo "# File name: bash_aliases"
@@ -55,6 +63,13 @@ mkal() {
             echo "# User@Host: $(whoami)@$(hostname)"
             echo ""
         } >> ~/.bash_aliases
+
+        # Display a colorful header message
+        echo "${PASTEL_RED}Creating new ~/.bash_aliases${RESET} ..."
+        echo "${PASTEL_GREEN}File: ~/.bash_aliases${RESET}"
+        echo "${PASTEL_CYAN}Created on: $(date +'%d/%m/%Y')${RESET}"
+        echo "${PASTEL_PURPLE}User@Host: $(whoami)@$(hostname)${RESET}"
+        echo "${PASTEL_YELLOW}Ready to add your first alias!${RESET}"
     fi
 
     # Check if alias already exists
@@ -68,7 +83,7 @@ mkal() {
     last_command=$(history -p '!!')
     last_command=$(echo "$last_command" | sed 's/^[[:space:]]*[0-9][[:space:]]*//; s/^[[:space:]]*//')
 
-    # Choose pastel color for fun effect (cycle through green, cyan, purple)
+    # Choose pastel color for alias name (cycle through green, cyan, purple)
     local colors=("${PASTEL_GREEN}" "${PASTEL_CYAN}" "${PASTEL_PURPLE}")
     local color="${colors[$((RANDOM % ${#colors[@]}))]}"
 
