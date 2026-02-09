@@ -1,0 +1,41 @@
+A) Exact .config changes
+
+Open /usr/src/linux/.config or set via menuconfig.
+
+1️) Disable NVIDIA framebuffer
+# CONFIG_FB_NVIDIA is not set
+
+2️) Disable nouveau
+# CONFIG_DRM_NOUVEAU is not set
+
+3) Required graphics options (must be set)
+CONFIG_DRM=y
+CONFIG_DRM_KMS_HELPER=y
+CONFIG_DRM_I915=y
+CONFIG_DRM_I915_FORCE_PROBE=""
+CONFIG_FB_SIMPLE=y
+CONFIG_FB_EFI=y
+
+4) Optional but recommended
+CONFIG_TMPFS=y
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+
+
+B) Exact kernel rebuild steps (CRUX)
+
+Run as root.
+
+	cd /usr/src/linux
+	make menuconfig
+	make -j$(nproc)
+	make modules_install
+	make install
+	reboot
+
+C) Post-reboot verification (only commands)
+lsmod | grep -E "nouveau|nvidiafb"
+modprobe nvidia
+nvidia-smi -> cd /usr/ports/opt && prt-get install nvidia 
+
+D) startx
