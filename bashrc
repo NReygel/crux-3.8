@@ -34,8 +34,11 @@ HISTIGNORE='ls:ll:la:pwd:cd:cd -:exit:clear:history:*password*:*secret*:*token*'
 HISTTIMEFORMAT='%F %T  '
 
 
-### Prompt (PS1) ###
+### Prompt - Uncomment preferred PS1 ###
+# Standard, no colors
 PS1='\u@\h:\w$( [[ $? != 0 ]] && echo " !")\$ '
+# Standard with colors
+# PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${RESET}\$ "
 
 ### Navigation & shell behavior ###
 # Auto-correct small typos
