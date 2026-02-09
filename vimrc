@@ -1,49 +1,52 @@
 "========================
-" ~/.vimrc - Optimized Version
+"       ~/.vimrc 
 "========================
 
 "--- Basic Settings ---
-syntax on                      " Enable syntax highlighting
+syntax on                     " Enable syntax highlighting
 set number                     " Show line numbers
 set relativenumber             " Show relative line numbers
 set tabstop=4                  " A tab character occupies 4 spaces
 set shiftwidth=4               " Indentation commands use 4 spaces
-set expandtab                  " Use spaces instead of tab characters
+set expandtab                  " Use spaces instead of tabs
 set autoindent                 " Copy indent from current line
-set smartindent                " More intelligent auto-indenting
-set wrap                       " Wrap long lines
-set linebreak                  " Break lines at word boundaries
-set scrolloff=3                " Keep 3 lines visible above/below cursor
-set incsearch                  " Show partial matches during search
-set hlsearch                   " Highlight search matches
+set smartindent                " Smart auto-indenting
+set wrap                        " Wrap long lines
+set linebreak                  " Wrap at word boundaries
+set scrolloff=3                " Keep 3 lines visible around cursor
+set incsearch                  " Incremental search
+set hlsearch                   " Highlight search results
 set ignorecase                 " Case-insensitive search
-set smartcase                  " Case-sensitive search if uppercase used
+set smartcase                  " Case-sensitive if uppercase used
 set lazyredraw                 " Faster redraw for big files
 
-"--- Colors / UI ---
-set termguicolors              " Enable true color support
-colorscheme evening            " Load 'evening' colorscheme
-set ruler                      " Show cursor position in status line
-set showmatch                  " Highlight matching brackets
-set noshowmode                 " Let statusline display mode instead
-set cmdheight=1                " Height of command bar
-set mouse=a                    " Enable mouse in all modes
-set cursorline                 " Highlight current line
+"--- Filetype Detection ---
+filetype plugin indent on       " Enable filetype detection, plugins, and indenting
+au BufRead,BufNewFile *.sh,*.bash,*.zsh set filetype=sh " Ensure shell files get correct syntax
 
-"--- Persistence ---
-set hidden                     " Allow buffers to be hidden
-set history=1000               " Command history size
-set undofile                   " Enable persistent undo
-let undodir=expand("~/.vim/undo")
-if !isdirectory(undodir)
-    call mkdir(undodir, "p")
-endif
+"--- Colors / UI ---
+set termguicolors               " True color support
+colorscheme evening             " Load evening colorscheme
+set ruler                        " Show cursor position
+set showmatch                   " Highlight matching brackets
+set noshowmode                  " Let statusline show mode instead
+set cmdheight=1                 " Command bar height
+set mouse=a                     " Enable mouse support
+set cursorline                  " Highlight current line
+
+" Highlight trailing whitespace
+set list
+set listchars=trail:·,tab:»·
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+
+" Wrap indicator for long lines
+set showbreak=↪
 
 "--- Status Line ---
-set laststatus=2               " Always show status line
+set laststatus=2                " Always display status line
 
-" Initialize pastel colors for statusline (GUI and terminal)
-" Uses safe defaults if colors not available
+" Initialize pastel-friendly colors (fallback if .vim_colors not loaded)
 if !exists("g:PASTEL_RED")
     let g:PASTEL_RED     = "Red"
     let g:PASTEL_GREEN   = "Green"
@@ -68,16 +71,31 @@ augroup StatuslineColors
     autocmd VimEnter * call ModifiedColor()
 augroup END
 
-" Statusline format
-set statusline=%f\ %h\ %r             " filename, help flag, read-only flag
+" Statusline format: filename, help, readonly
+set statusline=%f\ %h\ %r
 
-"--- Navigation / Plugins ---
-" Example: fzf.vim plugin mapping (safe if plugin not installed)
+"--- Navigation ---
+" Split navigation shortcuts
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Example plugin mapping (safe, does nothing if plugin not installed)
 if exists(":Files")
     nnoremap <C-p> :Files<CR>
 endif
 
-"--- Backup / Swap / Undo files ---
+"--- Persistence ---
+set hidden                      " Keep buffers hidden when abandoned
+set history=1000                 " Command history size
+set undofile                     " Persistent undo
+let undodir=expand("~/.vim/undo")
+if !isdirectory(undodir)
+    call mkdir(undodir, "p")
+endif
+
+" Backup / swap files
 let backupdir=expand("~/.vim/backup//")
 let directory=expand("~/.vim/swap//")
 if !isdirectory(backupdir)
