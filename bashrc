@@ -5,7 +5,6 @@
 # Test for an interactive shell.  There is no need to set anything
 # past this point if it isn't
 # Short but less readable version: [[ $- != *i* ]] && return
-
 if [[ $- != *i* ]] ; then
 	# Shell is non-interactive.  Be done now!
 	return
