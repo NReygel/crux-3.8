@@ -14,6 +14,20 @@ if [[ $- != *i* ]] ; then
 	return
 fi
 
+# Source .bash_aliases if it exists
+if [ -f ~/.bash_aliases ]; then
+	. ~/.bash_aliases
+fi
+
+# Source .bash_functions if it exists
+if [ -f ~/.bash_functions ]; then
+	. ~/.bash_functions
+fi
+
+# Source .bash_colors if it exists
+if [ -f ~/.bash_colors ]; then
+    . ~/.bash_colors
+fi
 
 # Put your fun stuff here.
 export EDITOR=vim
