@@ -3,22 +3,22 @@
 "========================
 
 "--- Basic Settings ---
-syntax on                     " Enable syntax highlighting
-set number                     " Show line numbers
-set relativenumber             " Show relative line numbers
-set tabstop=4                  " A tab character occupies 4 spaces
-set shiftwidth=4               " Indentation commands use 4 spaces
-set expandtab                  " Use spaces instead of tabs
-set autoindent                 " Copy indent from current line
-set smartindent                " Smart auto-indenting
+syntax on                       " Enable syntax highlighting
+set number                      " Show line numbers
+set relativenumber              " Show relative line numbers
+set tabstop=4                   " A tab character occupies 4 spaces
+set shiftwidth=4                " Indentation commands use 4 spaces
+set expandtab                   " Use spaces instead of tabs
+set autoindent                  " Copy indent from current line
+set smartindent                 " Smart auto-indenting
 set wrap                        " Wrap long lines
-set linebreak                  " Wrap at word boundaries
-set scrolloff=3                " Keep 3 lines visible around cursor
-set incsearch                  " Incremental search
-set hlsearch                   " Highlight search results
-set ignorecase                 " Case-insensitive search
-set smartcase                  " Case-sensitive if uppercase used
-set lazyredraw                 " Faster redraw for big files
+set linebreak                   " Wrap at word boundaries
+set scrolloff=3                 " Keep 3 lines visible around cursor
+set incsearch                   " Incremental search
+set hlsearch                    " Highlight search results
+set ignorecase                  " Case-insensitive search
+set smartcase                   " Case-sensitive if uppercase used
+set lazyredraw                  " Faster redraw for big files
 
 "--- Filetype Detection ---
 filetype plugin indent on       " Enable filetype detection, plugins, and indenting
@@ -27,7 +27,7 @@ au BufRead,BufNewFile *.sh,*.bash,*.zsh set filetype=sh " Ensure shell files get
 "--- Colors / UI ---
 set termguicolors               " True color support
 colorscheme evening             " Load evening colorscheme
-set ruler                        " Show cursor position
+set ruler                       " Show cursor position
 set showmatch                   " Highlight matching brackets
 set noshowmode                  " Let statusline show mode instead
 set cmdheight=1                 " Command bar height
@@ -88,8 +88,8 @@ endif
 
 "--- Persistence ---
 set hidden                      " Keep buffers hidden when abandoned
-set history=1000                 " Command history size
-set undofile                     " Persistent undo
+set history=1000                " Command history size
+set undofile                    " Persistent undo
 let undodir=expand("~/.vim/undo")
 if !isdirectory(undodir)
     call mkdir(undodir, "p")
