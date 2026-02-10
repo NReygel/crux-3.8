@@ -1,0 +1,17 @@
+1) Touchpad behavior
+
+   Precision TouchPad compatible device (buttonless, multi‑touch) .
+   Support comes from CONFIG_INPUT_TOUCHPAD, HID Multitouch, and i2c‑hid — these allow libinput (in Xorg) to detect and use gestures.
+
+  There are no special proprietary drivers needed. If cleanliness or responsiveness is lacking, configure libinput behavior in Xorg or desktop environment.
+  (note: how? -> todo)
+
+2) Recommended GRUB kernel parameters
+
+  In /etc/default/grub: intel_iommu=igfx_off nvidia-drm.modeset=1
+      Explanation:
+      intel_iommu=igfx_off reduces possible ACPI/IOMMU issues with Comet Lake hardware.
+      nvidia-drm.modeset=1 enables KMS for NVIDIA PRIME offload. 
+  
+  Regenerate config: grub-mkconfig -o /boot/grub/grub.cfg
+
