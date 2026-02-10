@@ -19,7 +19,7 @@ wifiup() {
     fi
 
     # Default wpa_supplicant config
-    local conf=${1:-/etc/wpa_supplicant/wpa_supplicant.conf}
+    local conf=${1:-/etc/wpa_supplicant.conf}
 
     # Start wpa_supplicant in background
     echo -e "\e[38;5;116mStarting wpa_supplicant on $iface...\e[0m"
