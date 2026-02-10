@@ -1,5 +1,5 @@
 "========================
-" ~/.vimrc - Optimized for Bash and Config Editing
+" ~/.vimrc 
 "========================
 
 "--- Basic Settings ---
