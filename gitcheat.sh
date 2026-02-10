@@ -1,15 +1,12 @@
 #!/bin/bash
-# Git + Codeberg Interactive Cheatsheet - Compact Pager Mode
-# Terminal-safe, fits 80x24, no scrolling required
+# Git + Codeberg Ultra-Compact Interactive Cheatsheet
+# Single-pager navigation (80x24), with status line
 
 # Colors
 BOLDWHITE="\033[1;97m"
 LIGHTBLUE="\033[1;94m"
 CYAN="\033[1;96m"
 RESET="\033[0m"
-
-# Maximum content lines per section (header + lines + footer)
-MAX_LINES=20
 
 # Sections content
 sections=(
@@ -74,71 +71,58 @@ ${LIGHTBLUE}ssh -T git@codeberg.org
 ${CYAN}# Use SSH URLs to avoid typing passwords"
 )
 
-# Function to display a section compactly
+# Function to display a section with status line
 display_section() {
     local index=$1
     clear
     local header="${sections[$index]%%$'\n'*}"
     local body="${sections[$index]#*$'\n'}"
 
-    # Wrap lines to ~76 chars to fit 80x24 terminal
+    # Header
     echo -e "${BOLDWHITE}==================================================${RESET}"
     echo -e "${BOLDWHITE}  $header${RESET}"
     echo -e "${BOLDWHITE}==================================================${RESET}"
 
-    # Use fold to wrap lines within 76 characters
+    # Wrap content lines to ~76 chars
     echo -e "$body" | fold -s -w 76
 
-    echo -e "\n${CYAN}[n] Next  [p] Previous  [m] Menu  [q] Quit${RESET}"
+    # Status line at bottom
+    echo -e "${CYAN}\nChapter $((index+1)) of ${#sections[@]}${RESET}"
+
+    # Footer navigation hint
+    echo -e "${CYAN}[n] Next  [p] Previous  [j] Jump  [q] Quit${RESET}"
 }
 
-# Main menu loop
+# Start at first chapter
 current=0
+
 while true; do
-    clear
-    echo -e "${BOLDWHITE}==================================================${RESET}"
-    echo -e "${BOLDWHITE}            Git + Codeberg Cheatsheet${RESET}"
-    echo -e "${BOLDWHITE}==================================================${RESET}\n"
-
-    # Show compact menu (header only)
-    for i in {0..11}; do
-        echo -e "${LIGHTBLUE}$((i+1))) ${sections[$i]%%$'\n'*}${RESET}"
-    done
-
-    echo -e "\n${CYAN}Select chapter (1-12) or q to quit:${RESET} "
-    read -r choice
-
-    if [[ "$choice" =~ ^[1-9]$|^1[0-2]$ ]]; then
-        current=$((choice-1))
-        while true; do
-            display_section "$current"
-            read -r nav
-            case "$nav" in
-                n|N)
-                    current=$(((current+1)%12))
-                    ;;
-                p|P)
-                    current=$(((current+11)%12))
-                    ;;
-                m|M)
-                    break
-                    ;;
-                q|Q)
-                    clear
-                    echo -e "${BOLDWHITE}Bye!${RESET}"
-                    exit 0
-                    ;;
-                *)
-                    # ignore invalid input
-                    ;;
-            esac
-        done
-    elif [[ "$choice" =~ ^[qQ]$ ]]; then
-        clear
-        echo -e "${BOLDWHITE}Bye!${RESET}"
-        exit 0
-    else
-        echo -e "${CYAN}Invalid choice. Press Enter to continue.${RESET}"
-        read
-    fi
+    display_section "$current"
+    read -r nav
+    case "$nav" in
+        n|N)
+            current=$(((current+1)%12))
+            ;;
+        p|P)
+            current=$(((current+11)%12))
+            ;;
+        j|J)
+            echo -ne "${CYAN}Enter chapter number (1-12): ${RESET}"
+            read -r jump
+            if [[ "$jump" =~ ^[1-9]$|^1[0-2]$ ]]; then
+                current=$((jump-1))
+            else
+                echo -e "${CYAN}Invalid chapter. Press Enter to continue.${RESET}"
+                read
+            fi
+            ;;
+        q|Q)
+            clear
+            echo -e "${BOLDWHITE}Bye!${RESET}"
+            exit 0
+            ;;
+        *)
+            # ignore invalid input
+            ;;
+    esac
 done
