@@ -1,5 +1,5 @@
 # ~/.bash_functions.d/wifiup.sh
-# Crux-friendly Wi-Fi auto-connect function
+# Wi-Fi connect function
 wifiup() {
     # Only root can bring up Wi-Fi
     if [ "$(id -u)" -ne 0 ]; then
